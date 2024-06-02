@@ -1,12 +1,21 @@
 const express = require('express');
 const app = express(); //create an express app
+const cors = require('cors');
 
 const port = 5000;
+
 
 
 require('dotenv').config();
 const Project = require('./Project');
 const Blog = require('./Blog');
+
+app.use(express.json());
+app.use(cors());
+
+app.use(cors({
+  origin: 'http://localhost:3000', // Adjust the allowed origin as needed
+  methods: 'GET, POST, PATCH, DELETE',}));
 
 app.get('/', (req, res) => {
     res.send('Hello, World!');
@@ -40,6 +49,20 @@ app.post("/projects", async (req, res) => {
     try {
       const newProject = await project.save();
       res.status(201).json(newProject);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  });
+
+  app.post("/blogs", async (req, res) => {
+    console.log(req.body);
+    // res.send("Creating a project");
+  
+    const blog = new Blog(req.body);
+  
+    try {
+      const newBlog = await blog.save();
+      res.status(201).json(newBlog);
     } catch (err) {
       res.status(400).json({ message: err.message });
     }

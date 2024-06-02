@@ -7,3 +7,4 @@ mongoose.connect(dbURI)
     .catch(err => console.error(err));
 
 module.exports = mongoose;
+//create a code to print hello world
